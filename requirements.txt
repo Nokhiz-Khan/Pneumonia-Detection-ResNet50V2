@@ -1,1 +1,13 @@
 
+# Deep Learning Core Framework
+tensorflow>=2.10.0,<2.16.0
+
+# Interactive Web Application Deployment
+gradio>=3.35.0
+
+# Scientific Computing & Data Processing
+numpy>=1.23.5
+
+# Image Processing & Visualization
+Pillow>=9.5.0
+matplotlib>=3.7.1
