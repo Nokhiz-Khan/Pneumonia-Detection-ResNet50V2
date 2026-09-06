@@ -59,7 +59,7 @@ You can check and review the core files and visual previews provided in this rep
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git
+git clone [https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git](https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git)
 cd Pneumonia-Detection-ResNet50V2
 2. Install Dependencies
 Make sure you have Python installed, then install the required packages:
