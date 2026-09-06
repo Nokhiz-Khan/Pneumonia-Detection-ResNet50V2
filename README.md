@@ -18,67 +18,101 @@ Pneumonia is an inflammatory condition of the lung affecting primarily the micro
 ├── requirements.txt                     # Required Python packages and dependencies
 └── README.md                            # Project documentation
 
+## 🛠️ Tech Stack & Libraries
 
-## Tech Stack & Libraries
-Python (Programming Language)
+- **Python** — Programming Language
+- **TensorFlow / Keras** — Deep Learning Framework and ResNet50V2 Transfer Learning
+- **ResNet50V2** — Pre-trained CNN architecture
+- **Gradio** — Interactive Web UI for model deployment
+- **NumPy** — Numerical and data manipulation
+- **Matplotlib** — Data visualization
+- **Google Colab** — Cloud-based training environment
+- **Google Drive** — Dataset and model asset storage
 
-TensorFlow / Keras (Deep Learning Framework & ResNet50V2 Transfer Learning)
+---
 
-Gradio (Interactive Web UI for model deployment)
+## 📊 Methodology & Model Pipeline
 
-NumPy & Matplotlib (Data manipulation and visualization)
+### 1. Dataset Extraction
 
-Google Colab & Google Drive (Cloud training environment and model asset storage)
+The chest X-ray dataset is extracted from Google Drive into the working environment.
 
-##  Methodology & Model Pipeline
-Dataset Extraction: The dataset is unzipped directly from Google Drive into the working environment.
+### 2. Data Preprocessing & Augmentation
 
-Data Preprocessing & Augmentation:
+The images are prepared before being passed to the model:
 
-Images are resized to 224x224 pixels.
+- Images are resized to `224x224` pixels.
+- Pixel values are rescaled using `1.0 / 255`.
+- Data augmentation techniques such as rotation and horizontal flipping are applied to the training images.
+- Augmentation helps improve model generalization and reduce overfitting.
 
-Pixel values are rescaled (1.0 / 255).
+### 3. Transfer Learning with ResNet50V2
 
-Data augmentation techniques (such as rotation range and horizontal flips) are applied to the training set to prevent overfitting.
+The project uses the pre-trained **ResNet50V2** architecture.
 
-Transfer Learning (ResNet50V2):
+- The base ResNet50V2 model is loaded with pre-trained **ImageNet** weights.
+- The pre-trained layers are frozen using `trainable = False`.
+- Custom classification layers are added on top of the base model.
+- The classification head includes:
+  - Global Average Pooling
+  - Dense layer with ReLU activation
+  - Sigmoid output layer for binary classification
 
-The base model is loaded with pre-trained ImageNet weights with trainable = False to freeze feature extraction layers.
+### 4. Model Training & Optimization
 
-Custom dense classification layers (Global Average Pooling, Dense ReLU layer, and Sigmoid output layer) are appended on top.
+The model is trained using appropriate callbacks and optimization techniques.
 
-Callbacks & Optimization:
+- **EarlyStopping** monitors validation AUC and helps prevent overfitting.
+- **ModelCheckpoint** saves the best-performing model weights.
+- The best model is saved as:
 
-EarlyStopping is utilized to monitor validation AUC and prevent overfitting.
+```text
+best_pneumonia_model.h5
 
-ModelCheckpoint automatically saves the best performing weights as best_pneumonia_model.h5.
-
-## How to Run the Project
+💻 How to Run the Project
 1. Clone the Repository
-Bash
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+
+
+git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
+
 2. Install Dependencies
-Make sure you have Python installed, then install the required packages:
 
-Bash
+Make sure Python is installed, then install the required packages:
+
 pip install -r requirements.txt
+
 3. Run the Training Notebook
-Open the pneumonia_detection_training.ipynb file in Google Colab or Jupyter Notebook.
 
-Connect your Google Drive containing your chest X-ray dataset and run the cells sequentially to reproduce the training process.
+Open the following notebook in Google Colab or Jupyter Notebook:
 
-## Launch the Web App
+pneumonia_detection_training.ipynb
+
+Connect your Google Drive containing the chest X-ray dataset and run the notebook cells sequentially to reproduce the training process.
+
+4. Launch the Web Application
+
 To run the interactive Gradio interface locally, execute:
 
-Bash
 python app.py
+
+The application allows users to upload a chest X-ray image and receive a prediction from the trained model.
+
 🌟 Professional Highlights
-Clean Code Standards: The Jupyter notebook is structured into logical, well-commented blocks (Setup, Dataset Extraction, Preprocessing, Model Architecture, and Gradio Interface) adhering to industry best practices.
+Transfer Learning: Uses the pre-trained ResNet50V2 architecture with ImageNet weights.
+Image Augmentation: Applies augmentation techniques to improve generalization.
+Early Stopping: Helps prevent unnecessary training and overfitting.
+Model Checkpointing: Automatically saves the best-performing model.
+Interactive Web Interface: Gradio provides a simple interface for uploading X-ray images and viewing predictions.
+Clean Project Structure: Training, application, dependencies, and documentation are organized into separate files.
+Lightweight Repository: Large datasets and unnecessary training outputs are excluded from version control.
+⚠️ Disclaimer
 
-Optimized Repository Size: Heavy training output logs are omitted from the notebook to keep the repository lightweight and version-control friendly.
+This project is developed for educational and research purposes only. It is not intended to replace professional medical diagnosis or clinical decision-making.
 
-Production-Ready UI: Integrated seamlessly with Gradio to allow users to upload custom X-ray images and instantly view confidence scores for Normal vs. Pneumonia classes.
+Predictions generated by the model should not be considered medical advice.
 
 📜 License
+
 This project is open-source and available under the MIT License.
+
