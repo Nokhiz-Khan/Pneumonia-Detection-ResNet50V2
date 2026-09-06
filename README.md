@@ -1,87 +1,148 @@
-# 🩺 Pneumonia Detection System Using Deep Learning (ResNet50V2 & Gradio)
+# Pneumonia Detection using Chest X-Ray Images (ResNet50V2)
 
-A complete end-to-end Deep Learning project for detecting Pneumonia from chest X-ray images. This repository contains the model training pipeline (`pneumonia_detection_training.ipynb`), the trained model assets, and an interactive web interface built with Gradio for real-time predictions.
+A deep learning project for detecting pneumonia from chest X-ray images using Convolutional Neural Networks (CNN) and Transfer Learning (ResNet50V2), with an interactive Gradio demo.
 
----
+## Overview
 
-## 🚀 Project Overview
+This project implements and compares two approaches for pneumonia detection:
 
-Pneumonia is an inflammatory condition of the lung affecting primarily the microscopic air sacs. Early and accurate detection from chest X-rays is vital for effective medical intervention. This project leverages **Transfer Learning** using the pre-trained **ResNet50V2** architecture to classify chest X-ray images into two categories: **Normal** or **Pneumonia**.
+1. **Custom CNN Model** – A convolutional neural network built from scratch
+2. **Transfer Learning Model** – Using pre-trained ResNet50V2 with fine-tuning
 
----
+## Dataset
 
-## 📂 Repository Structure & Assets
+The project uses the [Chest X-Ray Pneumonia Dataset](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia) from Kaggle, which contains:
 
-You can check and review the core files and visual previews provided in this repository assets:
-* **`pneumonia_detection_training.ipynb`**: Jupyter Notebook containing the complete dataset pipeline, model architecture, and training logic (with outputs cleared for clean version control).
-* **`app.py`**: Gradio web application script designed for real-time inference and user interaction.
-* **`requirements.txt`**: List of all required Python packages and dependencies to run the project.
-* **`best_pneumonia_model.h5`**: The optimized trained model weights used by the Gradio app for accurate predictions.
-* **`assets/dataset.png`**: Visual preview and overview of the dataset structure used for training. You can check the `assets` folder to view it.
+- Training images of normal and pneumonia cases
+- Validation set
+- Test set
 
----
+Sample images from the dataset:
 
-## 📊 Dataset Information
+![Dataset Samples](assets/dataset_samples.png)
 
-* **Source Dataset:** Chest X-Ray Images (Pneumonia) sourced from Kaggle.
-* **Kaggle Link:** [Chest X-Ray Images (Pneumonia) on Kaggle](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
-* **Dataset Structure:** Divided into training and validation sets containing X-ray images belonging to **Normal** and **Pneumonia** classes.
+## Features
 
----
+**Data Preprocessing:**
+- Image erosion and dilation
+- Gaussian blur
+- Canny edge detection
+- HSV color space conversion
 
-## 🛠️ Tech Stack & Libraries
+**Data Augmentation:**
+- Horizontal and vertical flips
+- Rotation
+- ZCA whitening
+- Width and height shifts
+- Channel shifts
+- Shear and zoom transformations
 
-* **Python** (Programming Language)
-* **TensorFlow / Keras** (Deep Learning Framework & ResNet50V2 Transfer Learning)
-* **Gradio** (Interactive Web UI for model deployment)
-* **NumPy & Matplotlib** (Data manipulation and visualization)
-* **Google Colab & Google Drive** (Cloud training environment and model asset storage)
+**Model Architectures:**
+- Custom CNN with multiple convolutional and pooling layers
+- Transfer Learning using ResNet50V2 pre-trained on ImageNet
 
----
+**Evaluation Metrics:**
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- Confusion Matrix
 
-## 📊 Methodology & Model Pipeline
+**Interactive Demo:**
+- `app.py` runs a Gradio web app where you can upload a chest X-ray and get a live prediction
 
-1. **Dataset Extraction:** The dataset is unzipped directly from Google Drive into the working environment.
-2. **Data Preprocessing & Augmentation:** 
-   * Images are resized to `224x224` pixels.
-   * Pixel values are rescaled (`1.0 / 255`).
-   * Data augmentation techniques (such as rotation range and horizontal flips) are applied to the training set to prevent overfitting.
-3. **Transfer Learning (ResNet50V2):** 
-   * The base model is loaded with pre-trained `ImageNet` weights with `trainable = False` to freeze feature extraction layers.
-   * Custom dense classification layers (Global Average Pooling, Dense ReLU layer, and Sigmoid output layer) are appended on top.
-4. **Callbacks & Optimization:** 
-   * `EarlyStopping` is utilized to monitor validation AUC and prevent overfitting.
-   * `ModelCheckpoint` automatically saves the best performing weights as `best_pneumonia_model.h5`.
+## Requirements
 
----
+Install the required dependencies:
 
-## 💻 How to Run the Project
-
-### 1. Clone the Repository
 ```bash
-git clone [https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git](https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git)
-cd Pneumonia-Detection-ResNet50V2
-2. Install Dependencies
-Make sure you have Python installed, then install the required packages:
-
-Bash
 pip install -r requirements.txt
-3. Run the Training Notebook
-Open the pneumonia_detection_training.ipynb file in Google Colab or Jupyter Notebook.
+```
 
-Connect your Google Drive containing your chest X-ray dataset and run the cells sequentially to reproduce the training process.
+## Project Structure
 
-4. Launch the Web App
-To run the interactive Gradio interface locally using the provided model weights, execute:
+Pneumonia-Detection-ResNet50V2/
+├── pneumonia_detection_training.ipynb # Main training notebook
+├── app.py # Gradio demo app
+├── requirements.txt # Python dependencies
+├── README.md # Project documentation
+└── assets/ # Result images and demo screenshots
+├── dataset_samples.png
+├── training_results.png
+├── gradio_demo_normal.png
+└── gradio_demo_pneumonia.png
 
-Bash
-python app.py
-🌟 Professional Highlights
-Clean Code Standards: The Jupyter notebook is structured into logical, well-commented blocks (Setup, Dataset Extraction, Preprocessing, Model Architecture, and Gradio Interface) adhering to industry best practices.
 
-Optimized Repository Size: Heavy training output logs are omitted from the notebook to keep the repository lightweight and version-control friendly.
+## Usage
 
-Production-Ready UI: Integrated seamlessly with Gradio to allow users to upload custom X-ray images and instantly view confidence scores for Normal vs. Pneumonia classes.
+1. **Setup Environment**
 
-📜 License
-This project is open-source and available under the MIT License.
+```bash
+   pip install -r requirements.txt
+```
+
+2. **Train the Model**
+
+   Open `pneumonia_detection_training.ipynb` in Jupyter Notebook or Google Colab and run all cells. The notebook automatically downloads the dataset from Kaggle using `kagglehub`.
+
+3. **Run the Demo App**
+
+```bash
+   python app.py
+```
+
+   This launches a local Gradio interface where you can upload a chest X-ray image and see the model's prediction in real time.
+
+4. **Training**
+
+   - The notebook trains both CNN and transfer learning models
+   - Uses early stopping to prevent overfitting
+   - Includes GPU support for faster training
+
+5. **Model Evaluation**
+
+   - Evaluate on test set
+   - Generate confusion matrix
+   - Calculate precision, recall, and F1-score
+
+## Models
+
+### Model 1: Custom CNN
+- 4 Convolutional blocks with MaxPooling
+- Dropout layers for regularization
+- 3 Dense layers for classification
+- Binary sigmoid output
+
+### Model 2: Transfer Learning (ResNet50V2)
+- Pre-trained ResNet50V2 base (frozen layers)
+- Custom dense layers on top
+- Adam optimizer
+- Binary cross-entropy loss
+
+## Results
+
+Training accuracy/loss curves and confusion matrix:
+
+![Training Results](assets/training_results.png)
+
+### Gradio Demo in Action
+
+| Normal X-Ray Prediction | Pneumonia X-Ray Prediction |
+|---|---|
+| ![Normal Prediction](assets/gradio_demo_normal.png) | ![Pneumonia Prediction](assets/gradio_demo_pneumonia.png) |
+
+## GPU Support
+
+The notebook includes GPU detection and configuration for:
+
+- Google Colab (T4 GPU recommended)
+- Local GPU setup with TensorFlow
+
+## License
+
+This project is for educational and research purposes.
+
+## Acknowledgments
+
+- Dataset: Paul Mooney (Kaggle)
+- Pre-trained models: TensorFlow/Keras Applications
