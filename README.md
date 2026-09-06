@@ -17,7 +17,9 @@ Pneumonia is an inflammatory condition of the lung affecting primarily the micro
 ├── app.py                               # Gradio web application script for real-time inference
 ├── requirements.txt                     # Required Python packages and dependencies
 └── README.md                            # Project documentation
-🛠️ Tech Stack & Libraries
+
+
+## Tech Stack & Libraries
 Python (Programming Language)
 
 TensorFlow / Keras (Deep Learning Framework & ResNet50V2 Transfer Learning)
@@ -28,7 +30,7 @@ NumPy & Matplotlib (Data manipulation and visualization)
 
 Google Colab & Google Drive (Cloud training environment and model asset storage)
 
-📊 Methodology & Model Pipeline
+##  Methodology & Model Pipeline
 Dataset Extraction: The dataset is unzipped directly from Google Drive into the working environment.
 
 Data Preprocessing & Augmentation:
@@ -51,7 +53,7 @@ EarlyStopping is utilized to monitor validation AUC and prevent overfitting.
 
 ModelCheckpoint automatically saves the best performing weights as best_pneumonia_model.h5.
 
-💻 How to Run the Project
+## How to Run the Project
 1. Clone the Repository
 Bash
 git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
@@ -66,7 +68,7 @@ Open the pneumonia_detection_training.ipynb file in Google Colab or Jupyter Note
 
 Connect your Google Drive containing your chest X-ray dataset and run the cells sequentially to reproduce the training process.
 
-4. Launch the Web App
+## Launch the Web App
 To run the interactive Gradio interface locally, execute:
 
 Bash
