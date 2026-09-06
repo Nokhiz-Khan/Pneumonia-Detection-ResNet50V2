@@ -1,13 +1,14 @@
 # Pneumonia Detection using Chest X-Ray Images (ResNet50V2)
 
-A deep learning project for detecting pneumonia from chest X-ray images using Convolutional Neural Networks (CNN) and Transfer Learning (ResNet50V2), with an interactive Gradio demo.
+A deep learning project for detecting pneumonia from chest X-ray images using Transfer Learning with ResNet50V2, along with an interactive Gradio demo for real-time predictions.
 
 ## Overview
 
-This project implements and compares two approaches for pneumonia detection:
+This project uses **Transfer Learning** to detect pneumonia from chest X-ray images:
 
-1. **Custom CNN Model** – A convolutional neural network built from scratch
-2. **Transfer Learning Model** – Using pre-trained ResNet50V2 with fine-tuning
+- Pre-trained **ResNet50V2** (trained on ImageNet) is used as a frozen feature extractor
+- Custom classification layers are added on top for binary classification (Normal vs Pneumonia)
+- An interactive **Gradio** web app is included for live inference
 
 ## Dataset
 
@@ -17,39 +18,35 @@ The project uses the [Chest X-Ray Pneumonia Dataset](https://www.kaggle.com/data
 - Validation set
 - Test set
 
+The dataset zip is stored in Google Drive and extracted at runtime (see Usage below).
+
 Sample images from the dataset:
 
 ![Dataset Samples](assets/dataset_samples.png)
 
-## Features
+## Model Architecture
 
-**Data Preprocessing:**
-- Image erosion and dilation
-- Gaussian blur
-- Canny edge detection
-- HSV color space conversion
+**Transfer Learning with ResNet50V2**
 
-**Data Augmentation:**
-- Horizontal and vertical flips
-- Rotation
-- ZCA whitening
-- Width and height shifts
-- Channel shifts
-- Shear and zoom transformations
+- Base model: `ResNet50V2` pre-trained on ImageNet, with `include_top=False`
+- Base layers frozen (`base_model.trainable = False`)
+- `GlobalAveragePooling2D` on top of the base model output
+- `Dense(128, activation='relu')` hidden layer
+- `Dense(1, activation='sigmoid')` output layer for binary classification
+- Optimizer: Adam
+- Loss: Binary cross-entropy
+- Metrics: Accuracy, AUC
 
-**Model Architectures:**
-- Custom CNN with multiple convolutional and pooling layers
-- Transfer Learning using ResNet50V2 pre-trained on ImageNet
+## Training Setup
 
-**Evaluation Metrics:**
-- Accuracy
-- Precision
-- Recall
-- F1-Score
-- Confusion Matrix
-
-**Interactive Demo:**
-- `app.py` runs a Gradio web app where you can upload a chest X-ray and get a live prediction
+- Image size: `224 x 224`
+- Batch size: `32`
+- Data augmentation on training set: rotation, zoom, horizontal flip
+- Validation data only rescaled (no augmentation)
+- Callbacks:
+  - `EarlyStopping` (monitors `val_auc`, patience = 3, restores best weights)
+  - `ModelCheckpoint` (saves best model based on `val_auc`)
+- Trained for up to 10 epochs
 
 ## Requirements
 
@@ -61,17 +58,18 @@ pip install -r requirements.txt
 
 ## Project Structure
 
+​```
 Pneumonia-Detection-ResNet50V2/
-├── pneumonia_detection_training.ipynb # Main training notebook
-├── app.py # Gradio demo app
-├── requirements.txt # Python dependencies
-├── README.md # Project documentation
-└── assets/ # Result images and demo screenshots
-├── dataset_samples.png
-├── training_results.png
-├── gradio_demo_normal.png
-└── gradio_demo_pneumonia.png
-
+├── pneumonia_detection_training.ipynb   # Main training notebook (Colab)
+├── app.py                               # Gradio demo app
+├── requirements.txt                     # Python dependencies
+├── README.md                            # Project documentation
+└── assets/                              # Result images and demo screenshots
+    ├── dataset_samples.png
+    ├── training_results.png
+    ├── gradio_demo_normal.png
+    └── gradio_demo_pneumonia.png
+​```
 
 ## Usage
 
@@ -81,47 +79,37 @@ Pneumonia-Detection-ResNet50V2/
    pip install -r requirements.txt
 ```
 
-2. **Train the Model**
+2. **Prepare the Dataset**
 
-   Open `pneumonia_detection_training.ipynb` in Jupyter Notebook or Google Colab and run all cells. The notebook automatically downloads the dataset from Kaggle using `kagglehub`.
+   This project is built to run on **Google Colab**. Mount your Google Drive and place the dataset zip (`chest-xray-pneumonia.zip`) inside a `pneumonia_detection` folder in your Drive. The notebook will mount the drive and extract the dataset automatically:
 
-3. **Run the Demo App**
+```python
+   from google.colab import drive
+   drive.mount('/content/drive')
+```
+
+3. **Train the Model**
+
+   Open `pneumonia_detection_training.ipynb` in Google Colab and run all cells in order:
+   - Setup & imports
+   - Dataset extraction
+   - Data preprocessing & loaders
+   - Model architecture (ResNet50V2)
+   - Model training
+
+   The best model is automatically saved to your Google Drive as `best_pneumonia_model.h5`.
+
+4. **Run the Gradio Demo**
 
 ```bash
    python app.py
 ```
 
-   This launches a local Gradio interface where you can upload a chest X-ray image and see the model's prediction in real time.
-
-4. **Training**
-
-   - The notebook trains both CNN and transfer learning models
-   - Uses early stopping to prevent overfitting
-   - Includes GPU support for faster training
-
-5. **Model Evaluation**
-
-   - Evaluate on test set
-   - Generate confusion matrix
-   - Calculate precision, recall, and F1-score
-
-## Models
-
-### Model 1: Custom CNN
-- 4 Convolutional blocks with MaxPooling
-- Dropout layers for regularization
-- 3 Dense layers for classification
-- Binary sigmoid output
-
-### Model 2: Transfer Learning (ResNet50V2)
-- Pre-trained ResNet50V2 base (frozen layers)
-- Custom dense layers on top
-- Adam optimizer
-- Binary cross-entropy loss
+   This launches a local Gradio interface where you can upload a chest X-ray image and get a live "Normal vs Pneumonia" prediction with confidence scores.
 
 ## Results
 
-Training accuracy/loss curves and confusion matrix:
+Training accuracy/loss curves:
 
 ![Training Results](assets/training_results.png)
 
@@ -133,10 +121,7 @@ Training accuracy/loss curves and confusion matrix:
 
 ## GPU Support
 
-The notebook includes GPU detection and configuration for:
-
-- Google Colab (T4 GPU recommended)
-- Local GPU setup with TensorFlow
+The training notebook is designed to run on Google Colab with GPU acceleration (T4 GPU recommended) for faster training.
 
 ## License
 
@@ -145,4 +130,4 @@ This project is for educational and research purposes.
 ## Acknowledgments
 
 - Dataset: Paul Mooney (Kaggle)
-- Pre-trained models: TensorFlow/Keras Applications
+- Pre-trained model: TensorFlow/Keras Applications (ResNet50V2)    
