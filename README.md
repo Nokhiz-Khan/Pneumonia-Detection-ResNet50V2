@@ -1,34 +1,82 @@
-# Pneumonia Detection from Chest X-Rays using ResNet50V2
+# 🩺 Pneumonia Detection System Using Deep Learning (ResNet50V2 & Gradio)
 
-An end-to-end deep learning solution designed to detect Pneumonia from Chest X-Ray images using Transfer Learning with ResNet50V2 and an interactive web deployment via Gradio.
+A complete end-to-end Deep Learning project for detecting Pneumonia from chest X-ray images. This repository contains both the model training pipeline (implemented in a clean Google Colab Jupyter Notebook) and an interactive web interface built with Gradio for real-time predictions.
 
-## Key Features
-- **Architecture:** Pre-trained ResNet50V2 base model with custom dense layers.
-- **Regularization:** Early Stopping (`patience=3`) and Model Checkpointing to prevent overfitting.
-- **Web Interface:** Interactive Gradio UI for quick image uploads and probabilistic output display.
+---
 
-## Repository Structure
-- `app.py`: Gradio Web UI implementation script.
-- `requirements.txt`: Python dependencies required for execution.
-- `assets/`: Directory containing performance visual documentation, evaluation logs, and sample UI demonstrations.
+## 🚀 Project Overview
 
-## Documentation & Assets
-All experimental visualizations and UI proofs are documented inside the `assets/` directory:
-- Sample Dataset Preview: `assets/dataset_samples.png`
-- Epoch Performance Logs: `assets/training_results.png`
-- UI Demo (Pneumonia Detection): `assets/gradio_demo_pneumonia.png`
-- UI Demo (Normal Detection): `assets/gradio_demo_normal.png`
+Pneumonia is an inflammatory condition of the lung affecting primarily the microscopic air sacs. Early and accurate detection from chest X-rays is vital for effective medical intervention. This project leverages **Transfer Learning** using the pre-trained **ResNet50V2** architecture to classify chest X-ray images into two categories: **Normal** or **Pneumonia**.
 
-## How to Run Locally
-1. Clone repository:
-   ```bash
-   git clone [https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git](https://github.com/Nokhiz-Khan/Pneumonia-Detection-ResNet50V2.git)
-   cd Pneumonia-Detection-ResNet50V2
+---
 
-## Install dependencies:
+## 📂 Repository Structure
 
+```text
+├── pneumonia_detection_training.ipynb   # Jupyter Notebook containing dataset pipeline, model architecture, and training logic
+├── app.py                               # Gradio web application script for real-time inference
+├── requirements.txt                     # Required Python packages and dependencies
+└── README.md                            # Project documentation
+🛠️ Tech Stack & Libraries
+Python (Programming Language)
+
+TensorFlow / Keras (Deep Learning Framework & ResNet50V2 Transfer Learning)
+
+Gradio (Interactive Web UI for model deployment)
+
+NumPy & Matplotlib (Data manipulation and visualization)
+
+Google Colab & Google Drive (Cloud training environment and model asset storage)
+
+📊 Methodology & Model Pipeline
+Dataset Extraction: The dataset is unzipped directly from Google Drive into the working environment.
+
+Data Preprocessing & Augmentation:
+
+Images are resized to 224x224 pixels.
+
+Pixel values are rescaled (1.0 / 255).
+
+Data augmentation techniques (such as rotation range and horizontal flips) are applied to the training set to prevent overfitting.
+
+Transfer Learning (ResNet50V2):
+
+The base model is loaded with pre-trained ImageNet weights with trainable = False to freeze feature extraction layers.
+
+Custom dense classification layers (Global Average Pooling, Dense ReLU layer, and Sigmoid output layer) are appended on top.
+
+Callbacks & Optimization:
+
+EarlyStopping is utilized to monitor validation AUC and prevent overfitting.
+
+ModelCheckpoint automatically saves the best performing weights as best_pneumonia_model.h5.
+
+💻 How to Run the Project
+1. Clone the Repository
+Bash
+git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+cd your-repo-name
+2. Install Dependencies
+Make sure you have Python installed, then install the required packages:
+
+Bash
 pip install -r requirements.txt
+3. Run the Training Notebook
+Open the pneumonia_detection_training.ipynb file in Google Colab or Jupyter Notebook.
 
-## Run the Gradio app:
+Connect your Google Drive containing your chest X-ray dataset and run the cells sequentially to reproduce the training process.
 
+4. Launch the Web App
+To run the interactive Gradio interface locally, execute:
+
+Bash
 python app.py
+🌟 Professional Highlights
+Clean Code Standards: The Jupyter notebook is structured into logical, well-commented blocks (Setup, Dataset Extraction, Preprocessing, Model Architecture, and Gradio Interface) adhering to industry best practices.
+
+Optimized Repository Size: Heavy training output logs are omitted from the notebook to keep the repository lightweight and version-control friendly.
+
+Production-Ready UI: Integrated seamlessly with Gradio to allow users to upload custom X-ray images and instantly view confidence scores for Normal vs. Pneumonia classes.
+
+📜 License
+This project is open-source and available under the MIT License.
